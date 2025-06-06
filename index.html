@@ -1,55 +1,161 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Calculadora de Nota Final</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0f4f8;
-      padding: 30px;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    .container {
-      max-width: 500px;
-      margin: auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.1);
-      flex-grow: 1;
-    }
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0 20px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-      box-sizing: border-box;
-    }
-    button {
-      background-color: #0077cc;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      width: 100%;
-    }
-    button:hover {
-      background-color: #005fa3;
-    }
-    .resultado {
-      margin-top: 20px;
-      font-weight: bold;
-      font-size: 1.1rem;
-    }
-    footer {
-      text-align: center;
-      padding:
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Calculadora de Nota Final</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #71b7e6, #9b59b6);
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    padding: 20px;
+  }
+  .container {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 30px 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    max-width: 400px;
+    width: 100%;
+  }
+  h2 {
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+  }
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  input[type="number"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    box-sizing: border-box;
+    outline: none;
+  }
+  input[type="number"]:focus {
+    box-shadow: 0 0 8px 2px #6a1b9a;
+  }
+  button {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    background-color: #6a1b9a;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #4a1074;
+  }
+  .resultado {
+    margin-top: 25px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-align: center;
+    min-height: 70px;
+    border-radius: 10px;
+    padding: 15px;
+    line-height: 1.4;
+  }
+  .aprovado {
+    background-color: #28a745cc;
+    color: #e6f9ea;
+  }
+  .final {
+    background-color: #ffc107cc;
+    color: #4a3b00;
+  }
+  .reprovado {
+    background-color: #dc3545cc;
+    color: #f8d7da;
+  }
+  footer {
+    margin-top: 40px;
+    font-size: 0.9rem;
+    color: #eee;
+  }
+</style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Calculadora de Nota Final</h2>
+
+    <label for="nota1">Nota 1:</label>
+    <input type="number" id="nota1" step="0.1" min="0" max="10" placeholder="Digite a primeira nota" />
+
+    <label for="nota2">Nota 2:</label>
+    <input type="number" id="nota2" step="0.1" min="0" max="10" placeholder="Digite a segunda nota" />
+
+    <button id="btnCalcular">Calcular</button>
+
+    <div id="resultado" class="resultado"></div>
+  </div>
+
+  <footer>
+    Desenvolvido por Heytor
+  </footer>
+
+  <script>
+    document.getElementById('btnCalcular').addEventListener('click', function() {
+      const nota1 = parseFloat(document.getElementById('nota1').value);
+      const nota2 = parseFloat(document.getElementById('nota2').value);
+      const resultadoDiv = document.getElementById('resultado');
+
+      resultadoDiv.className = "resultado"; // resetar classes
+
+      if (isNaN(nota1) || isNaN(nota2)) {
+        resultadoDiv.textContent = "Por favor, insira as duas notas válidas entre 0 e 10.";
+        return;
+      }
+
+      if (nota1 < 0 || nota1 > 10 || nota2 < 0 || nota2 > 10) {
+        resultadoDiv.textContent = "As notas devem estar entre 0 e 10.";
+        return;
+      }
+
+      const media = (nota1 + nota2) / 2;
+
+      if (media >= 7) {
+        resultadoDiv.classList.add("aprovado");
+        resultadoDiv.innerHTML = `Média: ${media.toFixed(2)} <br> 😄 <strong>Aprovado!</strong>`;
+      } else if (media < 4) {
+        resultadoDiv.classList.add("reprovado");
+        resultadoDiv.innerHTML = `Média: ${media.toFixed(2)} <br> 😞 <strong>Reprovado!</strong>`;
+      } else {
+        const notaFinalNecessaria = 5 * 2 - media; // média final = (media + nota final) / 2 = 5
+
+        if (notaFinalNecessaria > 10) {
+          resultadoDiv.classList.add("reprovado");
+          resultadoDiv.innerHTML = `Média: ${media.toFixed(2)} <br> 😞 <strong>Mesmo com prova final, não é possível ser aprovado.</strong>`;
+        } else {
+          resultadoDiv.classList.add("final");
+          resultadoDiv.innerHTML = `Média: ${media.toFixed(2)} <br> 📚 <strong>Você precisa tirar pelo menos ${notaFinalNecessaria.toFixed(2)} na prova final para ser aprovado.</strong>`;
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
