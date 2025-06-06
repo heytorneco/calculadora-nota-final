@@ -1,81 +1,131 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Calculadora de Nota Final</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      max-width: 500px;
-      margin: 50px auto;
-      background-color: #f7f7f7;
-      padding: 20px;
+      font-family: "Segoe UI", sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 2rem;
       border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    input, button {
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      max-width: 400px;
       width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      font-size: 16px;
     }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 1rem;
+      color: #444;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
     button {
-      background-color: #0066cc;
-      color: white;
+      width: 100%;
+      padding: 0.8rem;
+      background-color: #4CAF50;
       border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #004c99;
-    }
-    #resultado {
-      margin-top: 20px;
+      color: white;
       font-weight: bold;
-      font-size: 18px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #43a047;
+    }
+
+    .resultado {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: #e8f5e9;
+      border-left: 5px solid #4CAF50;
+      border-radius: 8px;
+      font-size: 1rem;
+      color: #2e7d32;
     }
   </style>
 </head>
 <body>
-  <h2>Calculadora da Situação Final</h2>
+  <div class="container">
+    <h1>Calculadora de Nota Final</h1>
 
-  <label for="n1">Nota 1:</label>
-  <input type="number" id="n1" step="0.1" min="0" max="10" />
+    <label for="nota1">Nota 1:</label>
+    <input type="number" id="nota1" step="0.1" min="0" max="10">
 
-  <label for="n2">Nota 2:</label>
-  <input type="number" id="n2" step="0.1" min="0" max="10" />
+    <label for="nota2">Nota 2:</label>
+    <input type="number" id="nota2" step="0.1" min="0" max="10">
 
-  <button onclick="calcular()">Ver resultado</button>
+    <button onclick="calcular()">Calcular</button>
 
-  <div id="resultado"></div>
+    <div id="resultado" class="resultado" style="display:none;"></div>
+  </div>
 
   <script>
     function calcular() {
-      const n1 = parseFloat(document.getElementById("n1").value);
-      const n2 = parseFloat(document.getElementById("n2").value);
-      const resultadoDiv = document.getElementById("resultado");
+      const n1 = parseFloat(document.getElementById("nota1").value);
+      const n2 = parseFloat(document.getElementById("nota2").value);
+      const resultado = document.getElementById("resultado");
 
       if (isNaN(n1) || isNaN(n2)) {
-        resultadoDiv.innerHTML = "Por favor, preencha as duas notas.";
+        resultado.style.display = "block";
+        resultado.style.background = "#ffebee";
+        resultado.style.borderLeft = "5px solid #c62828";
+        resultado.style.color = "#c62828";
+        resultado.innerHTML = "Por favor, preencha as duas notas.";
         return;
       }
 
-      const mediaParcial = (n1 + n2) / 2;
+      const media = (n1 + n2) / 2;
 
-      if (mediaParcial >= 7) {
-        resultadoDiv.innerHTML = `✅ Média: ${mediaParcial.toFixed(2)}<br>Aluno aprovado! 🎉`;
-      } else if (mediaParcial < 4) {
-        resultadoDiv.innerHTML = `❌ Média: ${mediaParcial.toFixed(2)}<br>Aluno reprovado direto. 😞`;
+      if (media >= 7) {
+        resultado.style.display = "block";
+        resultado.innerHTML = `Média: ${media.toFixed(1)}<br><strong>Aprovado!</strong>`;
+      } else if (media < 4) {
+        resultado.style.display = "block";
+        resultado.innerHTML = `Média: ${media.toFixed(1)}<br><strong>Reprovado direto.</strong>`;
       } else {
-        const notaFinalNecessaria = (2 * 5) - mediaParcial;
-        if (notaFinalNecessaria > 10) {
-          resultadoDiv.innerHTML = `📘 Média: ${mediaParcial.toFixed(2)}<br>Vai para a final, mas precisa de ${notaFinalNecessaria.toFixed(2)}.<br>❌ Não é possível ser aprovado.`;
+        const notaFinal = (15 - media).toFixed(1);
+        let situacao = `Você precisa tirar <strong>${notaFinal}</strong> na avaliação final para ser aprovado.<br>`;
+        if (notaFinal > 10) {
+          situacao += `<strong>Mesmo com nota máxima, não é possível alcançar média 5.0.</strong>`;
         } else {
-          resultadoDiv.innerHTML = `📘 Média: ${mediaParcial.toFixed(2)}<br>Vai para a prova final.<br>Precisa tirar <strong>${notaFinalNecessaria.toFixed(2)}</strong> para ser aprovado.`;
+          situacao += `Lembre-se: é necessário ter média final de 5.0 para aprovação.`;
         }
+
+        resultado.style.display = "block";
+        resultado.innerHTML = `Média parcial: ${media.toFixed(1)}<br>` + situacao;
       }
     }
   </script>
 </body>
 </html>
-add index.html
