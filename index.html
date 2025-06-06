@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculadora de Nota Final</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 50px auto;
+      background-color: #f7f7f7;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #004c99;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Calculadora da Situação Final</h2>
+
+  <label for="n1">Nota 1:</label>
+  <input type="number" id="n1" step="0.1" min="0" max="10" />
+
+  <label for="n2">Nota 2:</label>
+  <input type="number" id="n2" step="0.1" min="0" max="10" />
+
+  <button onclick="calcular()">Ver resultado</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    function calcular() {
+      const n1 = parseFloat(document.getElementById("n1").value);
+      const n2 = parseFloat(document.getElementById("n2").value);
+      const resultadoDiv = document.getElementById("resultado");
+
+      if (isNaN(n1) || isNaN(n2)) {
+        resultadoDiv.innerHTML = "Por favor, preencha as duas notas.";
+        return;
+      }
+
+      const mediaParcial = (n1 + n2) / 2;
+
+      if (mediaParcial >= 7) {
+        resultadoDiv.innerHTML = `✅ Média: ${mediaParcial.toFixed(2)}<br>Aluno aprovado! 🎉`;
+      } else if (mediaParcial < 4) {
+        resultadoDiv.innerHTML = `❌ Média: ${mediaParcial.toFixed(2)}<br>Aluno reprovado direto. 😞`;
+      } else {
+        const notaFinalNecessaria = (2 * 5) - mediaParcial;
+        if (notaFinalNecessaria > 10) {
+          resultadoDiv.innerHTML = `📘 Média: ${mediaParcial.toFixed(2)}<br>Vai para a final, mas precisa de ${notaFinalNecessaria.toFixed(2)}.<br>❌ Não é possível ser aprovado.`;
+        } else {
+          resultadoDiv.innerHTML = `📘 Média: ${mediaParcial.toFixed(2)}<br>Vai para a prova final.<br>Precisa tirar <strong>${notaFinalNecessaria.toFixed(2)}</strong> para ser aprovado.`;
+        }
+      }
+    }
+  </script>
+</body>
+</html>
+add index.html
